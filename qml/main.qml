@@ -4,11 +4,9 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
 import "controls"
 
-
-
 Window {
     id: window
-    title: "LEAF"
+    title: "ExO"
 
     // Hard Window Properties
     width: 980
@@ -27,13 +25,8 @@ Window {
     property int appCornerRadius: 10
 
     // Menu Properties
-    property int leftMenuDefWidth: 60
-    property var activeMenuBtn_list: [
-        //settingsBtn,
-        //infoBtn,
-        //profileBtn,
-        menuBtn]
-    property string mName: ""
+    property int minMenuWidth: 61
+    property int maxMenuWidth: 301
 
     // Font Sizes
     property int menuHeaderFontSize: 30
@@ -65,9 +58,9 @@ Window {
     property color highlightColour: "#ffffff"
     property color cTransparent: "#00000000"
 
-    // Internal Functions
+    // Window Resizing Functions
     QtObject {
-        id: internal
+        id: resize_functions
 
         function activeMenuNameFinder(){
             var i;
@@ -79,31 +72,6 @@ Window {
             return mName
         }
 
-        function activateMenu(self){
-            if(!leftMenuAnimation.running){
-                if(self.isActiveMenu){
-                       leftMenuAnimation.running = true
-                       self.isActiveMenu = false
-                   } else if(leftMenu.width > leftMenuDefWidth) {
-                        var i;
-                        for (i = 0; i < activeMenuBtn_list.length; i++) {
-                            activeMenuBtn_list[i].isActiveMenu = false
-                        }
-                       self.isActiveMenu = true
-                   } else {
-                       leftMenuAnimation.running = true
-                       self.isActiveMenu = true
-                   }
-               }
-        }
-
-        function deactivateMenus(){
-            var i;
-            for (i = 0; i < activeMenuBtn_list.length; i++) {
-                activeMenuBtn_list[i].isActiveMenu = false
-            }
-        }
-
         function restoreMargins(){
             windowMaximised = false
             windowMargin = 10
@@ -112,7 +80,7 @@ Window {
 
         function winNorm(){
             window.showNormal()
-            internal.restoreMargins()
+            resize_functions.restoreMargins()
             maximiseBtn.iconSource = "../Resources/svg_images/maximize_icon.svg"
         }
 
@@ -125,11 +93,27 @@ Window {
                 maximiseBtn.iconSource = "../Resources/svg_images/restore_icon.svg"
             }
             else{
-                internal.winNorm()
+                resize_functions.winNorm()
                 appCornerRadius = 10
             }
         }
 
+
+    }
+
+    // Menu Functions
+    QtObject {
+        id: menu_functions
+
+        property var isMenuOpen: if(leftMenu.width==maxMenuWidth) return true; else return false
+
+        function openCloseMenu(){
+            if(isMenuOpen){
+                lmCloseAnimation.running = true
+            } else {
+                lmOpenAnimation.running = true
+            }
+        }
 
     }
 
@@ -187,224 +171,63 @@ Window {
                         bottom: parent.bottom
                         topMargin: content.border.width - 1
                     }
-
-//                    CheckBox {
-//                        id: checkBox
-//                        x: 517
-//                        y: 281
-//                        text: qsTr("Check Box")
-//                        checked: menuActive
-//                    }
                 }
 
+                //  LEFT MENU
                 Rectangle {
                     id: leftMenu
-                    width: leftMenuDefWidth
+                    width: minMenuWidth
                     color: middleColour
+                    border.width: 2
+                    border.color: darkColour1
+                    anchors.leftMargin: -1
+                    anchors.bottomMargin: -1
+                    anchors.topMargin: -2
                     anchors {
                         left: parent.left
                         top: currentPage.top
                         bottom: currentPage.bottom
                     }
 
+                    //  LEFT MENU ANIMATIONS
                     PropertyAnimation {
-                        id: leftMenuAnimation
+                        id: lmOpenAnimation
                         target: leftMenu
                         property: "width"
-                        to: if(leftMenu.width == leftMenuDefWidth) return 300; else return leftMenuDefWidth
+                        to: minMenuWidth
+                        duration: 100
+                        easing.type: Easing.InOutQuint
+                    }
+                    PropertyAnimation {
+                        id: lmCloseAnimation
+                        target: leftMenu
+                        property: "width"
+                        to: minMenuWidth
                         duration: 100
                         easing.type: Easing.InOutQuint
                     }
 
-
-
                     Rectangle {
-                        id: expandedMenu
-                        color: darkColour1
-                        border.color: middleColour
-                        border.width: 2
-                        anchors.left: menuButtons.right
-                        anchors.right: parent.right
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        anchors.bottomMargin: -1
-                        anchors.topMargin: -1
-                        anchors.leftMargin: -border.width
-
-                        Text {
-                            id: menuTitle
-                            height: 56
-                            text: qsTr("what up bro")
-                            font.capitalization: Font.AllUppercase
-                            color: headingsColour
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.top: parent.top
-                            font.pixelSize: menuHeaderFontSize
-                            verticalAlignment: Text.AlignVCenter
-                            font.bold: true
-                            clip: true
-                            anchors.leftMargin: 8
-                            anchors.rightMargin: 3
-                            anchors.topMargin: 3
-                        }
-
-                        Rectangle {
-                            id: rectangle
-                            visible: menuBtn.isActiveMenu
-                            color: lightColour2
-                            anchors.left: menuTitle.right
-                            anchors.right: parent.right
-                            anchors.top: menuSpacerT.bottom
-                            anchors.bottom: menuSpacerB.top
-                            anchors.leftMargin: 1
-                        }
-
-                        Rectangle {
-                            id: menuSpacerB
-                            height: 2
-                            visible: menuBtn.isActiveMenu
-                            color: lightColour2
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.top: menuTitle.bottom
-                            anchors.rightMargin: 0
-                            anchors.leftMargin: 0
-                        }
-
-                        Rectangle {
-                            id: menuSpacerT
-                            height: 2
-                            visible: menuBtn.isActiveMenu
-                            color: lightColour2
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.bottom: menuTitle.top
-                            anchors.leftMargin: 0
-                            anchors.rightMargin: 0
-                        }
-
-                    }
-
-                    Rectangle {
-                        id: menuButtons
+                        id: nonExpandleBtns
                         color: "#00000000"
                         anchors.left: parent.left
-                        anchors.right: parent.left
-                        anchors.top: parent.top
+                        anchors.right: parent.right
+                        anchors.top: menuBtn.bottom
                         anchors.bottom: parent.bottom
-                        anchors.rightMargin: -leftMenuDefWidth
+                    }
 
-                        LeftBarButtons {
-                            id: menuBtn
-                            menuName: "Menu"
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.top: parent.top
-                            iconWidth: 24
-                            iconHeight: 24
-                            iconSource: "../Resources/svg_images/menu_icon.svg"
-                            defCol: middleColour
-                            hoverTint: generalHoverTint
-                            clickedColour: leftMenuClickedColour
-                            iconDefaultColour: highlightColour
-                            iconHoverColour: dimmedWhite
-                            iconActiveColour: highlightColour
-                            menuActiveColour: darkColour1
-                            bgBorderColour: lightColour2
-
-                            onClicked: if (!leftMenuAnimation.running){
-                                           if(isActiveMenu){
-                                               leftMenuAnimation.running = true
-                                               isActiveMenu = false
-                                           } else {
-                                               leftMenuAnimation.running = true
-                                               isActiveMenu = true
-                                           }
-                                       }
-
-                            //onClicked: internal.activateMenu(menuBtn)
-                        }
-
-
-
-                        LeftBarButtons {
-                            id: profileBtn
-                            menuName: "Profile"
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.bottom: infoBtn.top
-                            anchors.bottomMargin: -2
-                            iconWidth: 28
-                            iconHeight: 28
-                            iconSource: "../Resources/svg_images/profile_icon2.svg"
-                            defCol: middleColour
-                            hoverTint: generalHoverTint
-                            clickedColour: leftMenuClickedColour
-                            iconDefaultColour: highlightColour
-                            iconHoverColour: dimmedWhite
-                            iconActiveColour: highlightColour
-                            menuActiveColour: darkColour1
-                            bgBorderColour: lightColour2
-
-                            //onClicked: internal.activateMenu(profileBtn)
-                        }
-
-                        LeftBarButtons {
-                            id: infoBtn
-                            menuName: "Info"
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.bottom: settingsBtn.top
-                            anchors.bottomMargin: -2
-                            iconWidth: 28
-                            iconHeight: 28
-                            iconSource: "../Resources/svg_images/info_icon.svg"
-                            defCol: middleColour
-                            hoverTint: generalHoverTint
-                            clickedColour: leftMenuClickedColour
-                            iconDefaultColour: highlightColour
-                            iconHoverColour: dimmedWhite
-                            iconActiveColour: highlightColour
-                            menuActiveColour: darkColour1
-                            bgBorderColour: lightColour2
-
-                            //onClicked: internal.activateMenu(infoBtn)
-                        }
-
-
-
-
-                        LeftBarButtons {
-                            id: settingsBtn
-                            menuName: "Settings"
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.bottom: parent.bottom
-                            iconWidth: 28
-                            iconHeight: 28
-                            iconSource: "../Resources/svg_images/settings_icon.svg"
-                            defCol: middleColour
-                            hoverTint: generalHoverTint
-                            clickedColour: leftMenuClickedColour
-                            iconDefaultColour: highlightColour
-                            iconHoverColour: dimmedWhite
-                            iconActiveColour: highlightColour
-                            menuActiveColour: darkColour1
-                            bgBorderColour: lightColour2
-
-                            //onClicked: internal.activateMenu(settingsBtn)
-
-                        }
-
-                        Rectangle {
-                            id: btnSeparator
-                            width: 2
-                            color: lightColour2
-                            anchors.right: parent.right
-                            anchors.top: menuBtn.bottom
-                            anchors.bottom: profileBtn.top
-                        }
+                    ToggleButton {
+                        id: menuBtn
+                        borderColour: lightColour2
+                        defaultBgColour: middleColour
+                        hoverBgColour: lightColour1
+                        activeBgColour: leftMenuClickedColour
+                        iconLength: 24
+                        width: 60
+                        height: 60
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: parent.top
                     }
 
 
@@ -434,7 +257,7 @@ Window {
 
                 DragHandler {
                     onActiveChanged: if(active){
-                                         internal.restoreMargins()
+                                         resize_functions.restoreMargins()
                                          maximiseBtn.iconSource = "../Resources/svg_images/maximize_icon.svg"
                                          return window.startSystemMove()
                                      }
@@ -467,7 +290,7 @@ Window {
                         actCol: middleColour
 
                         onClicked: {
-                            internal.restoreMargins()
+                            resize_functions.restoreMargins()
                             window.showMinimized()
                             maximiseBtn.iconSource = "../Resources/svg_images/maximize_icon.svg"
                         }
@@ -487,7 +310,7 @@ Window {
                         actCol: middleColour
                         anchors.bottomMargin: 1
 
-                        onClicked: internal.maximiseRestore()
+                        onClicked: resize_functions.maximiseRestore()
 
                     }
 
@@ -620,6 +443,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.9}D{i:10}D{i:11}D{i:12}
+    D{i:0;formeditorZoom:0.75}D{i:10}
 }
 ##^##*/

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.14.2, 2021-04-18T11:46:55. -->
+<!-- Written by QtCreator 4.14.2, 2021-04-18T21:20:35. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -67,6 +67,11 @@
    <valuemap type="QVariantMap" key="AutoTest.CheckStates"/>
    <value type="int" key="AutoTest.RunAfterBuild">0</value>
    <value type="bool" key="AutoTest.UseGlobal">true</value>
+   <valuelist type="QVariantList" key="ClangCodeModel.CustomCommandLineKey">
+    <value type="QString">-fno-delayed-template-parsing</value>
+   </valuelist>
+   <value type="bool" key="ClangCodeModel.UseGlobalConfig">true</value>
+   <value type="QString" key="ClangCodeModel.WarningConfigId">Builtin.Questionable</value>
    <valuemap type="QVariantMap" key="ClangTools">
     <value type="bool" key="ClangTools.AnalyzeOpenFiles">true</value>
     <value type="bool" key="ClangTools.BuildBeforeAnalysis">true</value>
@@ -164,16 +169,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">main</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.X:/Qt/Projects/leaf/main.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">X:/Qt/Projects/leaf/main.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">main2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.X:/Qt/Projects/ExO/main.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">X:/Qt/Projects/ExO/main.py</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{e30916e2-cca7-452b-bf6e-5eb3eeb3ee1c}</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">X:\Qt\Projects\leaf\main.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">X:\Qt\Projects\ExO\main.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">X:/Qt/Projects/leaf</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">X:/Qt/Projects/ExO</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>
