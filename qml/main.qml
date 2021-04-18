@@ -8,7 +8,7 @@ import "controls"
 
 Window {
     id: window
-    title: "LEAF"
+    title: "ExO"
 
     // Hard Window Properties
     width: 980
@@ -620,6 +620,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.9}D{i:10}D{i:11}D{i:12}
+    D{i:0;formeditorZoom:0.9}
 }
 ##^##*/
