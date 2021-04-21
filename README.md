@@ -1,6 +1,5 @@
-# ExO-Companion
-External Organisation Companion
+# Project Organiser
 
-Orginally made to deal with my ADHD, which primarily hinders everything to do with organisation, despite the fact that I actually enjoy making organisational systems.
+A box for other boxes.
 
-The main contributing factor to make this was to have everything I needed in one easy place, without having to use a dozen different apps.
+Or the programming version of the rubbish bag that holds other rubbish bags.
